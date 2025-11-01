@@ -12,16 +12,17 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.2",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4"
   },
   "devDependencies": {
+    "nodemon": "^3.0.0",
+    "cross-env": "^7.0.3",
     "jest": "^25.1.0"
   },
   "nodemonConfig": {
-    "exec": "npm run dev",
+    "exec": "npm run transpile && npm run dev",
     "watch": [
       "server/*",
       "public/*"
@@ -29,7 +30,8 @@
     "ignore": [
       "**/__tests__/**",
       "*.test.js",
-      "*.spec.js"
+      "*.spec.js",
+      "dist-server/**"
     ]
   },
   "babel": {
@@ -42,11 +44,12 @@
   },
   "scripts": {
     "prestart": "npm run build",
+    "predev": "npm run build",
     "start": "npm run prod",
     "build": "npm run clean && npm run transpile",
     "server": "node ./dist-server/bin/www",
-    "dev": "NODE_ENV=development npm run server",
-    "prod": "NODE_ENV=production npm run server",
+    "dev": "cross-env NODE_ENV=development npm run server",
+    "prod": "cross-env NODE_ENV=production npm run server",
     "transpile": "babel ./server --out-dir dist-server",
     "clean": "rm -rf dist-server",
     "watch:dev": "nodemon",
